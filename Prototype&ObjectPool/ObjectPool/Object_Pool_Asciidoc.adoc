@@ -1,0 +1,72 @@
+.Object Pool Pattern
+[uml,file="Prototype.png"]
+--
+@startuml
+package Object_Pool.pattern { 
+
+Class ObjectPool{
+	
+        - {static} objects : List
+        - {static} objectpool : ObjectPool
+        - ObjectPool()
+        + getObjectpool() : ObjectPool
+        + getObject() : Object
+        + release() : Boolean
+        
+}
+
+note top of ObjectPool
+Temel olarak, Nesne havuzu,
+belirtilen miktarda nesne 
+içeren bir kaptır. 
+Havuzdan bir nesne alındığında,
+geri konulana kadar havuzda
+kullanılamaz. 
+Havuzdaki nesnelerin bir
+yaşam döngüsü vardır:
+oluşturma, doğrulama ve yok etme.
+end note
+
+
+note right of MainforObjectPool
+5 adet thread ile object pool'dan
+nesne istenmekte, thread ile 
+istenilen nesnelerin sayısı 
+2 'den ( garaj sayisindan) fazla
+olduğunda bekleme gerceklesmektedir.
+end note
+
+
+
+
+Class MainforObjectPool{
+	
+       + {static} p : ObjectPool
+       + m : MainforObjectPool
+       + t1 : Thread
+       + t2 : Thread
+       + t3 : Thread
+       + t4 : Thread
+       + t5 : Thread
+       + locked : Object
+       + {static} main() : Void
+       + run() : Void
+        
+        
+}
+
+Class Runnable{
+	
+       
+
+     
+}
+
+
+MainforObjectPool --> ObjectPool
+MainforObjectPool ..|>  Runnable
+
+
+
+@enduml
+--

@@ -1,0 +1,71 @@
+.Factory Pattern 
+[uml,file="umlClass.png"]
+--
+@startuml
+package com.fatih.factory.design.pattern { 
+
+
+Interface Otomobil{
+	
+        + Marka() :void
+        +  Model(int year) :void
+        
+}
+note left of Otomobil
+interface sinif
+end note
+
+note top of Mercedes
+Otomobil interface’inden kalýtarak
+benzerlik durumu sergiliyen alt sýnýf
+end note
+
+note top of Audi
+Otomobil interface’inden kalýtarak
+benzerlik durumu sergiliyen alt sýnýf
+end note
+
+
+
+note top of OtomobilFactory
+OtomobilFactory sýnýfýnýn bir tane static metodu var
+bu yordam diðer sýnýflarý oluþtururken her seferinde
+tekrar tekrar oluþturmak yerine statik bir biçimde
+daha optimize olarak oluþturmaktadýr
+end note
+
+
+Class Audi{
+	
+        
+        
+}
+
+Class Mercedes{
+	
+        
+}
+
+Class Client{
+	
+        + {static}Main() 
+        
+        
+}
+
+Class OtomobilFactory{
+	
+        + {static}createotomobil(Class aClass) :Otomobil
+        
+        
+}
+
+Audi ..|>  Otomobil
+Mercedes ..|>  Otomobil
+OtomobilFactory  ..> Otomobil
+Client ..> OtomobilFactory
+
+
+
+@enduml
+--  

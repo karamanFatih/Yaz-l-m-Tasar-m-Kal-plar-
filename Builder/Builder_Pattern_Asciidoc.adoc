@@ -1,0 +1,101 @@
+.Builder Pattern Pizza Siparişi
+[uml,file="Builder.png"]
+--
+@startuml
+package Builder.Pattern { 
+
+Class Pizza{
+	
+        -  hamur : String
+        -  sos : String
+        -  susleme : String
+        
+        
+        + setHamur() : Void
+        + setSos() : Void
+        + setsusleme() : Void
+        
+    
+        
+}
+
+note top of Pizza
+"Product"
+end note
+
+
+note left of PizzaBuilder
+"Abstract Builder"
+end note
+
+note top of HawaiianPizzaBuilder
+"ConcreteBuilder"
+end note
+
+note top of SpicyPizzaBuilder
+"ConcreteBuilder"
+end note
+note left of Waiter
+"Director"
+end note
+
+
+
+
+Abstract Class PizzaBuilder{
+       
+        #  pizza : Pizza
+        
+        + getPizza() : Pizza
+        + createNewPizzaProduct() : Void
+        + buildHamur() : Void
+        + buildSos() : Void
+        + buildSusleme() : Void
+     
+}
+
+Class HawaiianPizzaBuilder{
+       
+       
+        
+        
+        + buildHamur() : Void
+        + buildSos() : Void
+        + buildSusleme() : Void
+     
+}
+
+Class SpicyPizzaBuilder{
+       
+       
+        
+        
+        + buildHamur() : Void
+        + buildSos() : Void
+        + buildSusleme() : Void
+     
+}
+
+
+Class Waiter{
+       
+       
+        - pizzaBuilder : PizzaBuilder
+        
+        + setPizzaBuilder() : Void
+        + getPizza() : Pizza
+        + constructPizza() : Void
+     
+}
+
+
+
+
+
+HawaiianPizzaBuilder --|> PizzaBuilder
+SpicyPizzaBuilder --|>  PizzaBuilder
+
+
+
+@enduml
+--

@@ -1,0 +1,50 @@
+.Prototype pattern ( shallow ve deep copy ile )
+[uml,file="Prototype.png"]
+--
+@startuml
+package Prototype.pattern { 
+
+Class Contact{
+	
+        - phoneNo : Long
+        - email : String
+        - address : String
+        + setPhoneNo() :Void
+        + setEmail() :Void
+        + setAddress() :Void
+        + Contact()
+        # clone() :Object
+}
+
+note top of StudentData
+Prototype tasarım desenini uygulamak için
+* Nesne kopyalamak(klonlamak)
+* Klonlanan nesnenin setter metotlarını çağırmak
+gerekir.
+end note
+
+
+
+Class StudentData{
+	
+       
+        -  name : String
+        -  age : String
+        -  contact : Contact
+        +  StudentData()
+        + displayData() : Void
+        # clone() : Object
+        + Main() : Void
+        
+        
+}
+
+
+Contact ..|> Cloneable
+StudentData ..|> Cloneable
+StudentData -->  Contact
+
+
+
+@enduml
+--

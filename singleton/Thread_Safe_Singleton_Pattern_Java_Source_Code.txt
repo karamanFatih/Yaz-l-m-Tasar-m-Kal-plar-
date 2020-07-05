@@ -1,0 +1,161 @@
+package com.fatih.singleton.design.pattern.thread.safe;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+
+
+
+
+
+public class Otomobil implements Serializable {
+
+    private static volatile Otomobil kasaOtomobil;  // private referans only one instance ( Class ile ayný türde static bir member oluþturulur. )
+
+    private Otomobil() {        // private constructure ( Constructor private olmalý. Bu yapýlan iþlem new ile nesne oluþturulmasýný engeller. )
+    }
+
+    public static Otomobil getInstance() { //Instance’larý new ile yaratmýyoruz. Bunun yerine getInstance metodunu kullanýyoruz. Bu metot ise bize her defasýnda ayný instance’ý veriyor.
+
+        if (kasaOtomobil == null) { //1. kýsým  
+                                                        // 1. kýsýmdaki synchronized keyword’u ile 2. kýsýmda iþaretlenmiþ olan kýsýmý kilitler.Artýk bir baþka thread bu kýsma giremez.
+            synchronized (Otomobil.class) { //2. kýsým 
+
+                if (kasaOtomobil == null) {
+                    kasaOtomobil = new Otomobil();
+                }
+            }
+        }
+
+        return kasaOtomobil;
+    }
+
+    public Object readResolve() {
+        return kasaOtomobil;
+    }
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+//farklý sýnýflarda defalarca otomobil nesnesi üretilmesine ragmen tek bir nesne üzerinden islemler devam ediyor
+        Otomobil Otomobil1 = Otomobil.getInstance();
+
+        System.out.println(Otomobil1 + " otomobili üretildi.");
+
+        tekerlek a = new tekerlek();
+        a.tekerlekTak();
+        
+         boya b = new boya();
+        b.otomobiliBoya();
+        
+         motor c = new motor();
+        c.motorTak();
+        
+         pazarlama d = new pazarlama();
+        d.pazarla();
+        
+      
+
+    }
+
+}
+
+
+
+
+
+
+
+
+package com.fatih.singleton.design.pattern.thread.safe;
+
+
+public class boya {
+    
+    
+    public void otomobiliBoya() {
+
+        String boya = "kýrmýzý ";
+
+        Otomobil Otomobil3 = Otomobil.getInstance();
+
+        System.out.println(Otomobil3 + " otomobili " + boya + "renge boyandi");
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+package com.fatih.singleton.design.pattern.thread.safe;
+
+
+public class motor {
+    
+    
+    
+    public void motorTak() {
+
+        String motor = "dizel 70 hp";
+
+        Otomobil Otomobil4 = Otomobil.getInstance();
+
+        System.out.println(Otomobil4 + " otomobiline " + motor + " takildi.");
+    }
+    
+    
+}
+
+
+
+
+
+
+
+package com.fatih.singleton.design.pattern.thread.safe;
+
+
+public class pazarlama {
+    
+    public void pazarla() {
+
+        String pazarla = "satis bayisinde ";
+
+        Otomobil Otomobil5 = Otomobil.getInstance();
+
+        System.out.println(Otomobil5 + " otomobili " + pazarla + "satilmaktadir.");
+    }
+    
+    
+    
+}
+
+
+
+
+
+package com.fatih.singleton.design.pattern.thread.safe;
+
+public class tekerlek {
+
+    public void tekerlekTak() {
+
+        String tekerlek = "14 inch siyah renk ";
+
+        Otomobil Otomobil2 = Otomobil.getInstance();
+
+        System.out.println(Otomobil2 + " otomobiline " + tekerlek + "tekerlek takildi");
+    }
+
+}
+
+

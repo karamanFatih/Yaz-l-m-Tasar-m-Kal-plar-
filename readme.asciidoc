@@ -1,0 +1,123 @@
+.Linux'un maskotu Tux
+[#img-linux]
+[caption="Figure 1: ",link=C:\Users\sams\Desktop\dersler\Yazılım_Tasarım_Kalıpları\170202122_YazTasKal]
+image::linux.png[Sunset,300,200]
+
+
+= [#linux_isletim_sistemi_basligina_don]#Linux İşletim Sistemi# 
+
+
+https://linux.org[Linux]
+
+Linux (telaffuz: Lin-uks)image:170202122_YazTasKal\linux_small.png[Play, title="Play"], Unix’e fikirsel ve teknik anlamda atıfta bulunarak geliştirilmiş açık kaynak kodlu, özgür ve ücretsiz (destek hariç) bir işletim sistemi çekirdeğidir. Çekirdeğin kaynak kodları GNU Genel Kamu Lisansı çerçevesinde özgürce dağıtılabilir, değiştirilebilir ve kullanılabilir. Linux ismi ilk olarak Linus Torvalds tarafından yazılan ve 5 Ekim 1991 Linux 0.02 etiketiyle duyurusu yapılan, Linux çekirdeğinden gelmektedir. Linux'un Unix ile herhangi bir kod ortaklığı bulunmamaktadır yani Linux'un kodları sıfırdan başlanılarak yazılmıştır.
+
+NOTE: Çok geniş bir donanım desteğine sahip olan Linux çekirdeği; sunucu bilgisayarlar, masaüstü-dizüstü bilgisayarlar, iş istasyonları, akıllı telefonlar, yeni nesil TV'ler ve tabletler gibi hemen her platformda tam bir uyum içerisinde çalışabilmektedir. Linux sunucu işletim sistemlerinde kullanım oranı bakımından ilk sırada tercih edilmekte ve dünyanın 10 hızlı süperbilgisayarında da kullanılmaktadır.
+
+WARNING: Linux; işletim sistemi değildir.
+
+IMPORTANT: Linux; işletim sistemi çekirdeğidir.
+
+
+== En Yaygın Linux Tabanlı İşletim Sistemleri
+
+. image:Elementary.png[Elementary,150,150,role="right"]Elementary OS
+
+*  Akıllıca tasarlanmış ve harika görünmekte,
+*  Mükemmel masaüstü ortamını sunuyor,
+*  Önceden yüklenmiş pek çok uygulama yok.
+
+.  image:Linux_Mint.png[Linux_Mint,150,150,role="right"]Linux Mint
+
+* Linux için yeni olanlar için güçlü bir seçenek,
+* Windows / Mac'den geçiş yapmak için ideal,
+* Kutudan iyi medya desteği,
+* Etkileyici özelleştirme seçenekleri.
+
+.  image:Arch_Linux.png[Arch_Linux,150,150,role="right"]Arch Linux
+
+* Arch Linux veya Antergos Linux seçenekleri,
+* Özelleştirme için büyük potansiyel,
+* Antergos daha kullanıcı dostu bir dönüşü temsil ediyor.
+
+. image:Ubuntu.png[Ubuntu,150,150,role="right"]Ubuntu
+
+
+* İyi sebeplerden dolayı en popüler dağıtımlardan biri,
+* Acemiler için çok erişilebilir,
+* LTS versiyonunun güvenliği ve kararlılığı,
+* Lubuntu spin, yetersiz PC'ler için harika.
+
+.  image:Tails.png[Tails,150,150,role="right"]Tails
+
+
+* Gizlilik bilincinin dağıtımı,
+* Güvenlik ve mahremiyete vurgu,
+* Yine de kullanıcı dostu bir kullanıcı arayüzü korur,
+* Bir niş OS bir şey.
+
+
+
+
+Linux genel bilgi için şagıdaki videoyu izleyebilirsiniz.
+
+video::video.mp4[]
+
+
+video::rPQoq7ThGAU[youtube]
+
+
+
+.Son Versiyon Linux ve Windows Kullanıcı İşletim Sistemleri
+|===
+|linux |windows
+
+|ubuntu 19.10
+|windows 10
+
+|===
+
+
+NOTE: Windows işletim sisteminde C, C++ ve c# yazılım dilleri kullanılmaktadır.
+
+C++ sytax örnek verecek olursak;
+
+.example.cpp
+[source,ruby]
+----
+#include <iostream>
+using namespace std;
+
+int main() {
+  cout << "Hello World!";
+  return 0;
+}
+----
+
+*Satır 1:* `+#include <iostream>+`  `+cout+` gibi (satır 5'te kullanılan) giriş ve çıkış nesneleriyle çalışmamızı sağlayan  bir başlık dosyası kütüphanesidir. 
+
+
+*Bilgisayarınıza Kurulu Ubuntu Sürümü Nasıl Öğrenilir*
+
+[source,bash]
+----
+$  lsb_release -a   
+----
+----
+Output: 
+
+No LSB modules are available.
+Distributor ID:	LinuxMint
+Description:	Linux Mint 15 Olivia
+Release:	15
+Codename:	olivia
+----
+
+
+
+link:https://www.youtube.com/watch?v=_Kc9ImFpqro&list=PLh9ECzBB8tJOnxXrUTOqXfurKOZkN4mEY&pbjreload=10[linux eğitim serisi için buraya tıklayınız.]
+
+link:index.html[linux işletim sistemleri]
+
+https://https://forum.shiftdelete.net/threads/linux-2018-yilindaki-5-en-iyi-linux-isletim-sistemi-siralamasi.560753/["Elementary OS, Linux Mint,Arch Linux, Ubuntu,Tails^",role=teal]
+
+<<linux_isletim_sistemi_basligina_don>>

@@ -1,0 +1,102 @@
+package builder_odev;
+
+/* "Product" */
+class Pizza {
+    private String hamur = "";
+    private String sos = "";
+    private String susleme = "";
+
+    public void setHamur(String hamur) {
+        this.hamur = hamur;
+    }
+
+    public void setSos(String sos) {
+        this.sos = sos;
+    }
+
+    public void setSusleme(String susleme) {
+        this.susleme = susleme;
+    }
+}
+
+/* "Abstract Builder" */
+abstract class PizzaBuilder {
+    protected Pizza pizza;
+
+    public Pizza getPizza() {
+        return pizza;
+    }
+
+    public void createNewPizzaProduct() {
+        pizza = new Pizza();
+    }
+
+    public abstract void buildHamur();
+    public abstract void buildSos();
+    public abstract void buildSusleme();
+}
+
+/* "ConcreteBuilder" */
+class HawaiianPizzaBuilder extends PizzaBuilder {
+   
+    public void buildHamur() {
+        pizza.setHamur("ince");
+    }
+
+    public void buildSos() {
+        pizza.setSos("acý");
+    }
+
+    public void buildSusleme() {
+        pizza.setSusleme("jambon+Ananas");
+    }
+}
+
+/* "ConcreteBuilder" */
+class SpicyPizzaBuilder extends PizzaBuilder {
+    public void buildHamur() {
+        pizza.setHamur("kalýn");
+    }
+
+    public void buildSos() {
+        pizza.setSos("baharatli");
+    }
+
+    public void buildSusleme() {
+        pizza.setSusleme("pepperoni+salam");
+    }
+}
+
+/* "Director" */
+class Waiter {
+    private PizzaBuilder pizzaBuilder;
+
+    public void setPizzaBuilder(PizzaBuilder pb) {
+        pizzaBuilder = pb;
+    }
+
+    public Pizza getPizza() {
+        return pizzaBuilder.getPizza();
+    }
+
+    public void constructPizza() {
+        pizzaBuilder.createNewPizzaProduct();
+        pizzaBuilder.buildHamur();
+        pizzaBuilder.buildSos();
+        pizzaBuilder.buildSusleme();
+    }
+}
+
+/* müþteri pizza sipariþi veriyor. */
+public class PizzaBuilderDemo {
+    public static void main(String[] args) {
+        Waiter waiter = new Waiter();
+        PizzaBuilder hawaiianPizzabuilder = new HawaiianPizzaBuilder();  
+        PizzaBuilder spicyPizzaBuilder = new SpicyPizzaBuilder();      
+        waiter.setPizzaBuilder( hawaiianPizzabuilder );
+        waiter.constructPizza();
+        Pizza pizza = waiter.getPizza();
+      
+        
+    }
+}

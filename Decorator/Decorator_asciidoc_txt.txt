@@ -1,0 +1,118 @@
+
+.Decorator
+[uml,file="DecoratorUmlClass.png"]
+--
+@startuml
+package com.fatih.decorator.design.pattern { 
+
+
+interface ABSfrenOzelligiEkleyici{
+	
+        + ABSfrenOzelligiEkleyici()
+        + vasitaOlustur() : Void
+        - frenEkle() : Void
+      
+}
+
+Class Araba{
+        
+	    
+        + vasitaOlustur() : Void
+        
+        
+}
+
+Class CelikJantOzelligiEkleyici{
+
+      
+	   + CelikJantOzelligiEkleyici() 
+	   + vasitaOlustur() : Void
+       - celikJantEkle() : Void
+       
+}
+Class Fabrika{
+
+      
+	     +{static} main() : Void
+       
+}
+
+Class Kamyon{
+      
+	     
+	    
+        + vasitaOlustur() : Void
+       
+}
+
+Class KlimaOzelligiEkleyici{
+
+      
+	   + KlimaOzelligiEkleyici() 
+	   + vasitaOlustur() : Void
+       - klimaOzelligiEkle() : Void
+       
+}
+Class Otobus{
+      
+	     
+	    
+        + vasitaOlustur() : Void
+       
+}
+interface Vasita{
+      
+	     
+	    
+        + vasitaOlustur() : Void
+       
+}
+
+abstract VasitaOzellikEkleyici{
+      
+	     
+	    # ozellikEkleVasita : Vasita
+        + VasitaOzellikEkleyici() : Void
+       
+}
+
+note top of KlimaOzelligiEkleyici
+ Vasýtaya klima özelliði ekler.
+end note
+note top of CelikJantOzelligiEkleyici
+ Vasýtaya çelik jant ekler.
+end note
+note top of ABSfrenOzelligiEkleyici
+ Vasýtaya ABS fren sistemi ekler.
+end note
+
+note top of VasitaOzellikEkleyici
+ Vasýtaya dinamik olarak ek
+ özellikler eklemek için kullanýlýr.
+end note
+
+
+note bottom of Araba
+ nesnenin özeliklerini arttýrmak için,
+ temel nesneden türetilip de, yeni
+ nesneler yaratýlmasýna gerek yok
+end note
+
+
+
+
+ABSfrenOzelligiEkleyici "<<extends>>"--|> VasitaOzellikEkleyici
+Araba "<<implement>>"..|> Vasita
+CelikJantOzelligiEkleyici "<<extends>>"--|> VasitaOzellikEkleyici
+Kamyon "<<implement>>"..|> Vasita
+KlimaOzelligiEkleyici "<<extends>>"--|> VasitaOzellikEkleyici
+Otobus "<<implement>>"..|> Vasita
+VasitaOzellikEkleyici "<<implement>>"..|> Vasita
+
+
+Fabrika ..> Vasita :Kullanýr
+VasitaOzellikEkleyici  o-- Vasita
+
+
+@enduml
+--

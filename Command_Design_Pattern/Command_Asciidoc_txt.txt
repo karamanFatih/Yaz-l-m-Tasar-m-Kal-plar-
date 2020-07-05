@@ -1,0 +1,115 @@
+.Command Design Patern
+[uml,file="CommandUmlClass.png"]
+--
+@startuml
+package com.fatih.command.design.pattern { 
+
+
+interface Komut{
+	
+        + çalýþtýr() : void
+      
+}
+
+Class Surucu{
+	    
+        + main() : void
+        
+}
+
+Class Vites{
+
+      
+	    + Iler() :void
+        + Geri() :void
+        + Park() :void
+       
+}
+
+Class VitesGeriKomutu{
+
+        - vites :Vites
+       
+	    + VitesGeriKomutu()
+        + çalýþtýr() :void
+        
+        
+}
+
+Class VitesIleriKomutu{
+
+        - vites :Vites
+       
+	    + VitesIleriKomutu()
+        + çalýþtýr() :void
+        
+        
+}
+
+Class VitesParkKomutu{
+
+        - vites :Vites
+       
+	    + VitesParkKomutu()
+        + çalýþtýr() :void
+        
+        
+}
+
+Class VitesKolu{
+
+        - ileriKomutu :Komut
+        - geriKomutu :Komut
+        - parkKomutu :Komut
+       
+	    + VitesKolu()
+        + vitesIleri() :void
+        + vitesGeri() :void
+        + vitesPark() :void
+        
+        
+}
+note bottom of Komut
+ Tasarým desenindeki üst sýnýftýr.
+end note
+
+note top of VitesParkKomutu
+ Bu komut vitese park 
+ komutu verecek komut sýnýfýdýr.
+end note
+
+note top of VitesGeriKomutu
+ Bu komut vitese geri
+ komutu verecek komut sýnýfýdýr.
+end note
+
+note top of VitesIleriKomutu
+ Bu komut vitese ileri
+ komutu verecek komut sýnýfýdýr.
+end note
+note bottom of VitesKolu
+ Komutlarý çaðýracak
+ çaðýrýcý sýnýftýr.
+end note
+
+
+
+VitesIleriKomutu "<<implements>>"..|> Komut
+VitesIleriKomutu -> Vites
+
+VitesGeriKomutu "<<implements>>"..|> Komut
+VitesGeriKomutu -> Vites
+
+VitesParkKomutu "<<implements>>"..|> Komut
+VitesParkKomutu -> Vites
+
+
+
+
+VitesKolu  o-- Komut
+Surucu ..> VitesKolu :Use
+Surucu ..> Vites :Use
+
+
+@enduml
+--

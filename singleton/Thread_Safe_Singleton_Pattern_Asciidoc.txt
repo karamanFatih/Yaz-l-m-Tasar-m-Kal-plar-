@@ -1,0 +1,95 @@
+.Thread Safe Singleton Pattern
+[uml,file="umlClass.png"]
+--
+@startuml
+package com.fatih.singleton.design.pattern.thread.safe { 
+
+
+Class Otomobil{
+	
+        - {static} kasaOtomobil : Otomobil
+
+        -  {static} Otomobil()
+        +  {static} getInstance() 
+        + String readResolve()
+        + {static} main() :void
+        
+}
+
+note left of Otomobil
+Singleton olmasý için
+Constructor private olmalý
+static bir member
+static membera ulaþmak icin statik bir metod
+
+diger sýnýflar bu sýnýftan defalarca nesne üretse bile tek nesne üzerinde deðiþikler yapilir.
+end note
+
+note bottom of boya
+Otomobil classýndan bir nesne üretir ve boyar
+end note
+
+note bottom of motor
+Otomobil classýndan bir nesne üretir ve motor takar
+end note
+
+note bottom of tekerlek
+Otomobil classýndan bir nesne üretir ve tekerlek takar
+end note
+
+note bottom of pazarlama
+Otomobil classýndan bir nesne üretir ve pazarlar
+end note
+
+
+Class boya{
+	
+        + boya: String
+
+        +  otomobiliBoya() : void
+        
+        
+}
+
+Class motor{
+	
+        + motor: String
+
+        + motorTak(): void
+        
+        
+}
+
+Class tekerlek{
+	
+        + tekerlek: String
+
+        +  Otomobil() : void
+        
+        
+}
+Class pazarlama{
+	
+        + pazarla: String
+
+        + pazarla():
+        
+        
+}
+
+Interface Serializable{
+	
+     
+        
+}
+
+Otomobil --> Otomobil
+Otomobil ..|>  Serializable
+
+Otomobil --  boya
+Otomobil --  motor
+Otomobil --  tekerlek
+Otomobil --  pazarlama
+
+@enduml
+--

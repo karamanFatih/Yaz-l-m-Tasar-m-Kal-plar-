@@ -1,0 +1,38 @@
+
+
+[source,cpp]
+----
+
+class Otomobil
+class AileSinifi
+class Sport
+
+
+Otomobil<|-- AileSinifi
+Otomobil <|-- Sport
+
+class Otomobil{
+int id
+string marka
+string model
+string renk
+string yakit
+
+
+}
+
+class AileSinifi{
+int vites
+int konfor
+}
+
+class Sport {
+int hiz
+
+}
+
+
+
+----
+
+image::uml.jpg[uml]

@@ -1,0 +1,103 @@
+
+.Open Closed Princible
+[uml,file="OpenClosedPrincibleUmlClass.png"]
+--
+@startuml
+package com.fatih.Open.Closed.Princible { 
+
+
+interface Ders{
+	
+        + soruHazirla() : String
+      
+}
+
+Class Fizik{
+        + fizikSorusu :String
+	    
+        + soruHazirla() : String
+        
+}
+
+Class Matematik{
+
+      
+	     + matematikSorusu :String
+	    
+        + soruHazirla() : String
+       
+}
+Class Tarih{
+
+      
+	     + tarihSorusu :String
+	    
+        + soruHazirla() : String
+       
+}
+
+Class Turkce{
+      
+	     + turkceSorusu :String
+	    
+        + soruHazirla() : String
+       
+}
+
+Class DersSoruHazirlayici{
+       
+	    + dersinSorusunuHazirla() :String
+}
+
+note bottom of Ders
+ Temel arayüz sýnýfýdýr.
+ Ýmplemente eden alt derslerin
+ kendi alanlarýnda soru
+ hazýrlama metodunu tanýmlar.
+end note
+note top of Turkce
+ Turkce sorusu hazýrlanýr.
+end note
+note top of Matematik
+ Matematik sorusu hazýrlanýr.
+end note
+note top of Tarih
+ Tarih sorusu hazýrlanýr.
+end note
+note top of Fizik
+ Fizik sorusu hazýrlanýr.
+end note
+note right of DersSoruHazirlayici
+ Kontrolcu görevi görür,bu sýnýf
+ sayesinde yeni ders eklendiðinde
+ diðer derslerin yapýsýnda degisiklik
+ yapýlmadan o dersin kendine ait
+ sorularýnýn hazýrlanmasý saglanýr.
+ Bu sýnýf derslerin 
+ kendilerine özgü sorularýný
+ olusturulmasýný saðlar.
+ (Fizik dersi için fiziðe özel sorular,
+ matematik dersi için matematiðe
+ özel sorular hazýrlanýr,
+ her ders sýnýfýnýn kendine
+ ait soru tipi, konusu ve þekli vardýr.) 
+end note
+note top of Ogretmen
+ Kendi dersinden soru
+ hazýrlayacak öðretmeni tanýmlar.
+end note
+
+
+
+Fizik "<<implement>>"..|> Ders
+Matematik "<<implement>>"..|> Ders
+Tarih "<<implement>>"..|> Ders
+Turkce "<<implement>>"..|> Ders
+
+DersSoruHazirlayici  o-- Ders
+Ogretmen ..> DersSoruHazirlayici :Kullanýr
+
+
+
+@enduml
+--

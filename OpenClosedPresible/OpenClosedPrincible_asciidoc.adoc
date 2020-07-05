@@ -1,0 +1,294 @@
+
+
+
+
+== Open Closed Princible
+Sınıflarımız ve fonksiyonlarımız değişikliğe kapalı ancak yeni davranışların eklenmesine açık olmalıdır.
+
+Bu prebsib, sürdürülebilir ve tekrar kullanılabilir yapıda kod yazmanın temelini oluşturur.
+
+Open : Sınıf için yeni davranışlar eklenmesini sağlar
+
+Closed : Bir sınıf temel özellikleri değiştirilemez olmalıdır.
+
+
+Geliştirdiğimiz yazılıma/sınıfa var olan kodu değiştirmeden, yeni kod yazılarak yeni özellikler eklenebilmelidir. Yeni bir gereksinim geldiğinde mevcut kod üzerinde herhangi bir değişiklik yapmadan, open/closed prensibine ile yeni özellikler ekllenebilmekte, yazılım/sınıf geliştirilebilmektedir.
+
+[uml,file="OpenClosedPrincibleUmlClass.png"]
+--
+
+
+
+
+@startuml
+package com.fatih.Open.Closed.Princible { 
+
+
+interface Ders{
+	
+        + soruHazirla() : String
+      
+}
+
+Class Fizik{
+        + fizikSorusu :String
+	    
+        + soruHazirla() : String
+        
+}
+
+Class Matematik{
+
+      
+	     + matematikSorusu :String
+	    
+        + soruHazirla() : String
+       
+}
+Class Tarih{
+
+      
+	     + tarihSorusu :String
+	    
+        + soruHazirla() : String
+       
+}
+
+Class Turkce{
+      
+	     + turkceSorusu :String
+	    
+        + soruHazirla() : String
+       
+}
+
+Class DersSoruHazirla{
+       
+	    + dersinSorusunuHazirla() :String
+}
+
+note bottom of Ders
+ Temel arayüz sınıfıdır.
+ İmplemente eden alt derslerin
+ kendi alanlarında soru
+ hazırlama metodlarını tanımlar.
+ end note
+note top of Turkce
+ Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Turkce sorusu hazırlama platformu.
+end note
+note top of Matematik
+Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Matematik sorusu hazırlama platformu.
+end note
+note top of Tarih
+Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Tarih sorusu hazırlama platformu.
+end note
+note top of Fizik
+Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Fizik sorusu hazırlama platformu.
+end note
+note right of DersSoruHazirla
+  DersSoruHazirla tüm ders tiplerinin
+  soru hazırlanış ortamını hazırlamakla
+  yükümlü  ancak her dersin de kendine
+  özgü bir şablonu, konuları, içerikleri,
+  ifade ve gösterim vb. var. Yani her ders
+  için farklı yöntem kendi içlerinde
+  oluşturulma gerekliliğini doğurmaktadır.
+  
+  
+ Bu sınıf Kontrolcu görevi görür ve
+ sayesinde yeni ders eklendiğinde
+ diğer derslerin yapısında degisiklik
+ yapılmadan o dersin kendine ait
+ sorularının hazırlanması saglanır.
+ Yani derslerin kendilerine özgü sorularını
+ olusturulmasını sağlar.
+ 
+ end note
+
+note top of Ogretmen
+ Kendi dersinden soru
+ hazırlayacak öğretmeni tanımlar.
+end note
+
+
+
+Fizik "<<implement>>"..|> Ders
+Matematik "<<implement>>"..|> Ders
+Tarih "<<implement>>"..|> Ders
+Turkce "<<implement>>"..|> Ders
+
+DersSoruHazirla  o-- Ders
+Ogretmen ..> DersSoruHazirla :Kullanır
+
+
+
+@enduml
+--
+==== Neden Open Closed Princible Kullandım
+Bir öğretmenin kendi dersine ait soruları kendi dersine özel platformda ( yani kendi dersine has şablon,konu,içerik ve kaynaklarla ) soru hazırlayabilmesi için kullandım. Open Closed Prensibi ile sonradan ders eklenmesi durumunda mevcut classlar üzerinde hiçbir değişiklik yapılmadan genişletilebilir bir yapı kurmuş olduk.
+[source,java]
+----
+
+// dersler için kendilerine özgü sorular 
+// hazırlanması metodunu tanımlayan arayüzdür
+public interface Ders{<1>
+  public String soruHazirla();
+}
+----
+[source,java]
+----
+
+
+// Her yeni eklenen ders için kendine özgü
+// metodun çağırılmasını sağlayan sınıftır.
+// bu sayede yeni ders eklendiğinde diğer ders classlarında
+// değişiklik yapılmaz, yapılmasına gerek kalmaz
+
+public class DersSoruHazirlayici{<2>
+  public String dersinSorusunuHazirla(Ders ders){
+    return ders.soruHazirla();
+  }
+}
+----
+[source,java]
+----
+public class Fizik implements Ders {<3>
+   
+    public String fizikSorusu;
+    // Fizik dersi için fizik konularından soru hazırlanır.
+    // Fizik classının kendine özgü işlemleri yapan metodu
+    public String soruHazirla() {
+        fizikSorusu = " Newtonun yer çekimi yasasını açıklayınız ?";
+        System.out.println(fizikSorusu);
+        return fizikSorusu;
+    }
+
+    /* public Fizik(String soru) {
+        fizikSorusu = soru ;
+    }
+     */
+}
+----
+[source,java]
+----
+public class Matematik implements Ders {<4>
+
+    String matematikSorusu = "";
+    // Matematik dersi için matematik konularından soru hazırlanır.
+    // Matematik classının kendine özgü işlemleri yapan metodu
+    public String soruHazirla() {
+
+        matematikSorusu = " 2 x 2 = ?";
+        System.out.println(matematikSorusu);
+        return matematikSorusu;
+
+    }
+
+    /*public Matematik(String soru) {
+        matematikSorusu = soru;
+    }*/
+}
+
+----
+[source,java]
+----
+public class Tarih implements Ders {<5>
+
+    public String tarihSorusu;
+    // Tarih dersi için tarih konularından soru hazırlanır.
+    // Tarih classının kendine özgü işlemleri yapan metodu
+    public String soruHazirla() {
+        tarihSorusu = " İstanbulun fethi kaç yılında gerçekleşmiştir ?";
+        System.out.println(tarihSorusu);
+        return tarihSorusu;
+    }
+
+    /* public Tarih(String soru) {
+        tarihSorusu = soru ;
+    }*/
+}
+
+----
+[source,java]
+----
+public class Turkce implements Ders {<6>
+
+    public String turkceSorusu;
+    // Turkce dersi için turkce konularından soru hazırlanır.
+    // Turkce classının kendine özgü işlemleri yapan metodu
+    public String soruHazirla() {
+        turkceSorusu = " Alfabemizdeki Sesli harfler hangileridir ?";
+        System.out.println(turkceSorusu);
+        return turkceSorusu;
+    }
+
+    /*public Turkce(String soru) {
+        turkceSorusu = soru ;
+    }*/
+}
+----
+[source,java]
+----
+public class Ogretmen {<7>
+
+    public static void main(final String[] args) {
+
+        Matematik mat = new Matematik(); // matematik öğretmeni soru hazırlayacak
+        Turkce turk = new Turkce(); // turkce öğretmeni soru hazırlayacak
+        Tarih tar = new Tarih(); // tarih öğretmeni soru hazırlayacak
+        Fizik fiz = new Fizik();// fizik öğretmeni soru hazırlayacak
+        DersSoruHazirlayici soru = new DersSoruHazirlayici();
+        System.out.println("\nMatematik sorusu : \t");
+        soru.dersinSorusunuHazirla(mat);
+        System.out.println("\nTürkçe sorusu : \t");
+        soru.dersinSorusunuHazirla(turk);
+        System.out.println("\nTarih sorusu : \t");
+        soru.dersinSorusunuHazirla(tar);
+        System.out.println("\nFizik sorusu : \t");
+        soru.dersinSorusunuHazirla(fiz);
+        System.out.println("\n");
+    }
+
+}
+
+
+----
+
+<1> Temel arayüz sınıfıdır.Alt sınıfların kendilerine has özelliklerle oluşturmaları gereken metodu tanımlar.
+ 
+<2> Her yeni eklenen ders için kendine özgü metodu çağırılmasını sağlayan sınıftır. Bu sayede yeni ders eklendiğinde diğer ders classlarında değişiklik yapılmaz, yapılmasına gerek kalmaz.
+
+<3> Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Fizik sorusu hazırlama platformunu temsil eder.
+ 
+<4> Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Matematik sorusu hazırlama platformunu temsil eder.
+ 
+<5> Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Tarih sorusu hazırlama platformunu temsil eder.
+ 
+<6> Ders sınıfından implemente ettiği
+ metodu kendine has özelliklerle doldurur.
+ Türkçe sorusu hazırlama platformunu temsil eder.
+ 
+<7> Kendi dersinden soru hazırlayacak öğretmeni tanımlar.
+
+ 
+ 
+=== Ekran Çıktısı
+ 
+image::OpenClosedPrincible_proje_output.jpg[]
+
+Ekran çıktısında görüldüğü gibi Ogretmen classından 
+derslerin kendilerine ait özelliklerle hazırlanan soruları görülmektedir.

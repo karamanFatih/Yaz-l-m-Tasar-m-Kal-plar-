@@ -1,0 +1,346 @@
+//.Command Design Patern
+
+== Command Design Patern
+=== Nedir ?
+Komut(Command) tasarım deseni, behavioral tasarım desenlerinden biridir.
+
+Request-response model arasında lose coupling ilişki sağlar. 
+
+Bir isteği nesneye dönüştürerek, isteğin kullanıcı sınıfları tarafından rahatça erişilebilmesi sağlanır.
+
+=== Ne zaman Kullanılır?
+
+Diyelim ki 4 tane buton var ve her bir buton farklı işlemler yapıyor. Hangi butona tıklandığını if-else ile kontrol edip ilgili işlemin çalıştırılması yerine veya her buton tıklama olayı için ayrı 4 farklı metod yazmak yerine komut tasarım deseni kullanarak, yapılacak işlemler için(örneğin Açma, Kapama, Kaydetme gibi) sınıflar oluştururuz. Daha sonra, bu butonların onclick event'ları içerisinde bu sınıflardan nesne yaratılıp execute() metodu çağırabiliriz. Bu sayede karmaşık if-else yapısından da kurtulmuş oluruz.
+
+=== Nasıl Kullanılır?
+
+Her komut için bir sınıf yaratılır.
+
+Bu sınıfların ortak türe sahip olabilmesi için Command isminde bir interface tanımlanır.
+
+Command interface içerisinde tek bir tane metod gereklidir: execute() .
+
+Her komut için oluşturulan sınıflar execute() metodunu implement ederler.
+
+execute() metodu asıl işlevi yapacak olan sınıfın metodunu çağırır. 
+
+Asıl işlevi yapan sınıf Receiver sınıfıdır. Daha sonra Komut sınıflarının çağrılması için Invoker sınıfı oluşturulur.
+
+Fakat Invoker sınıfı hangi komut nesnesini kullanacağını bilmez. Sadece nasıl kullanacağını bilir. Son olarak Client ise Invoker sınıfını çağırır.
+
+==== Kısaca
+Bir nesene üzerinde bir işlemin nasıl yapıldığını bilmediğimiz ya da kullanmak istenen nesneyi tanımadığımız durumlarda, (Command tasarım şablonu ile ) yapılmak istenen işlemi bir nesneye dönüştürürerek, alıcı nesne tarafından işlemin yerine getirilmesini sağlarız. 
+
+== Avantajları
+1. Uygulama daha modüler ve esnek olur.
+2. Geriye alma işlemi ve anlık durumun restorasyonu gibi işlemler yapılabilir.
+3. Loglama ve transactional işlemler için kullanılabilir.
+4. Makro komutlar oluşturarak bu komutların bir anda çalıştırılması sağlanabilir.
+
+[uml,file="CommandUmlClass.png"]
+--
+@startuml
+package com.fatih.command.design.pattern { 
+
+
+interface Komut{
+	
+        + çalıştır() : void
+      
+}
+
+Class Surucu{
+	    
+        + main() : void
+        
+}
+
+Class Vites{
+
+      
+	    + Iler() :void
+        + Geri() :void
+        + Park() :void
+       
+}
+
+Class VitesGeriKomutu{
+
+        - vites :Vites
+       
+	    + VitesGeriKomutu()
+        + çalıştır() :void
+        
+        
+}
+
+Class VitesIleriKomutu{
+
+        - vites :Vites
+       
+	    + VitesIleriKomutu()
+        + çalıştır() :void
+        
+        
+}
+
+Class VitesParkKomutu{
+
+        - vites :Vites
+       
+	    + VitesParkKomutu()
+        + çalıştır() :void
+        
+        
+}
+
+Class VitesKolu{
+
+        - ileriKomutu :Komut
+        - geriKomutu :Komut
+        - parkKomutu :Komut
+       
+	    + VitesKolu()
+        + vitesIleri() :void
+        + vitesGeri() :void
+        + vitesPark() :void
+        
+        
+}
+
+
+
+note bottom of Komut
+ Sınıfların ortak türe sahip
+ olabilmesi için Komut isminde
+ bir interface tanımlanır.
+end note
+
+note top of VitesParkKomutu
+ Her komut için bir sınıf yaratılır.
+ çalıstır() metodunu implement ederler.
+ 
+end note
+
+note top of VitesGeriKomutu
+ Her komut için bir sınıf yaratılır.
+ çalıstır() metodunu implement ederler.
+end note
+
+note top of VitesIleriKomutu
+ Her komut için bir sınıf yaratılır.
+ çalıstır() metodunu implement ederler.
+end note
+note bottom of Vites
+ çalıstır() metodu asıl işlevi
+ yapacak olan bu sınıfın metodunu
+ çağırır.(Receiver sınıfıdır.)
+end note
+note right of Surucu
+ Client ise Invoker(Çağırıcı)
+ sınıfını çağırır.
+end note
+note bottom of VitesKolu
+ Komutları çağıracak
+ çağırıcı sınıftır.(Invoker sınıfı)
+end note
+
+
+
+VitesIleriKomutu "<<implements>>"..|> Komut
+VitesIleriKomutu -> Vites
+
+VitesGeriKomutu "<<implements>>"..|> Komut
+VitesGeriKomutu -> Vites
+
+VitesParkKomutu "<<implements>>"..|> Komut
+VitesParkKomutu -> Vites
+
+
+
+
+VitesKolu  o-- Komut
+Surucu ..> VitesKolu :Use
+Surucu ..> Vites :Use
+
+
+@enduml
+--
+==== Neden Command Desig Pattern Kullandım
+Otomatik vites sürücüsünün aracı istediği yöne hareket ettirmesi için tek yapması gereken vites kolunu gerekli komutu harekete geçirecek konuma getirmesidir.
+
+[source,java]
+----
+
+//Tasarım desenindeki üst sınıftır
+//Sınıfların ortak türe sahip olabilmesi için Komut isminde bir interface tanımlanır.
+public interface Komut {<1>
+
+  void çalıştır();
+}
+----
+
+[source,java]
+----
+
+//Her komut için bir sınıf yaratılır. çalıstır() metodunu implement ederler.
+public class VitesGeriKomutu implements Komut {<2>
+
+  private final Vites  vites;
+
+   // araç geri gidecek şekilde vitesi konumlandıran komut 
+  public VitesGeriKomutu( final Vites vites ) {
+    this.vites = vites;
+  }
+// implemenre edilen üst sınıftaki çalıştır() metodunu gerçekleştiriyoruz. 
+  @Override
+  public void çalıştır() {
+    vites.Geri();
+  }
+}
+----
+
+ 
+[source,java]
+----
+
+
+//Bu komut vitese ileri komutu verecek komut sınıfıdır.
+//Her komut için bir sınıf yaratılır. çalıstır() metodunu implement ederler.
+public class VitesIleriKomutu implements Komut {<3>
+
+  private final Vites  vites;
+  
+// araç ileri gidecek şekilde vitesi konumlandıran komut 
+  public VitesIleriKomutu( final Vites vites ) {
+    this.vites = vites;
+  }
+// üst sınıftan implemente edilen metod doldurulur/tanımlanır.
+  @Override
+  public void çalıştır() {
+    vites.Ileri();
+  }
+}
+----
+
+[source,java]
+----
+
+
+//Bu komut vitese park komutu verecek komut sınıfıdır.
+//Her komut için bir sınıf yaratılır. çalıstır() metodunu implement ederler.
+public class VitesParkKomutu implements Komut {<4>
+
+  private final Vites  vites;
+  
+// araç Park halinde tutacak şekilde vitesi konumlandıran komut 
+  public VitesParkKomutu( final Vites vites ) {
+    this.vites = vites;
+  }
+// üst sınıftan implemente edilen metod doldurulur/tanımlanır.
+  @Override
+  public void çalıştır() {
+    vites.Park();
+  }
+}
+----
+[source,java]
+----
+
+// tasarım desenindeki üst sınıftır
+//çalıstır() metodu asıl işlevi yapacak olan bu sınıfın metodunu çağırır.(Receiver sınıfıdır.)
+public class Vites {<5>
+
+  public void Ileri() {
+    System.out.println( "Şanzuman Dişlileri Araç İleri Gidecek Şekilde Konumlandırıldı." );
+  }
+
+  public void Geri() {
+     System.out.println( "Şanzuman Dişlileri Araç Geri Gidecek Şekilde Konumlandırıldı." );
+  }
+  public void Park() {
+     System.out.println( "Şanzuman Dişlileri Kilitlendi." );
+  }
+}
+----
+[source,java]
+----
+
+//Komutları çağıracak çağırıcı sınıftır.
+//design patternde komut etmek için kullanılan sınıf
+//Komutları çağıracak çağırıcı sınıftır.(Invoker sınıfı)
+public class VitesKolu {<6>
+
+  private final Komut  ileriKomutu;
+  private final Komut  geriKomutu;
+   private final Komut  parkKomutu;
+
+   // bu metodla vitesin ileri,geri ve park hali komutları verilir.
+  public VitesKolu( final Komut ileriKomutu, final Komut geriKomutu, final Komut parkKomutu ) {
+    this.ileriKomutu = ileriKomutu;
+    this.geriKomutu = geriKomutu;
+    this.parkKomutu = parkKomutu;
+  }
+
+  // ileri hareket sağlanır.
+  public void vitesIleri() {
+    ileriKomutu.çalıştır();
+  }
+ // geri hareket sağlanır.
+  public void vitesGeri() {
+    geriKomutu.çalıştır();
+  }
+   // park halinde tutulur.
+   public void vitesPark() {
+    parkKomutu.çalıştır();
+  }
+}
+----
+
+[source,java]
+----
+//Client ise Invoker(Çağırıcı) sınıfını çağırır.
+public class Surucu {<7>
+
+  public static void main( final String[] args ) {
+
+    // Vites nesnesi oluştur.
+    final Vites vites = new Vites();
+
+    // Vites komutlarını oluştur.
+    final VitesIleriKomutu ileriKomutu = new VitesIleriKomutu( vites );
+    final VitesGeriKomutu geriKomutu = new VitesGeriKomutu( vites );
+    final VitesParkKomutu parkKomutu = new VitesParkKomutu( vites );
+
+    // Vites topuzu nesnesini oluştur.
+    final VitesKolu viteskolu = new VitesKolu( ileriKomutu, geriKomutu, parkKomutu );
+
+    // Vites Kolu komutlarını çalıştır.
+    viteskolu.vitesIleri();
+    viteskolu.vitesGeri();
+    viteskolu.vitesPark();
+  }
+}
+----
+<1> Sınıfların ortak türe sahip
+ olabilmesi için Komut isminde
+ bir interface tanımlanır.
+ 
+<2> Her komut için bir sınıf yaratılır.
+ çalıstır() metodunu implement ederler.
+<3> Her komut için bir sınıf yaratılır.
+ çalıstır() metodunu implement ederler.
+<4> Her komut için bir sınıf yaratılır.
+ çalıstır() metodunu implement ederler.
+<5> çalıstır() metodu asıl işlevi
+ yapacak olan bu sınıfın metodunu
+ çağırır.(Receiver sınıfıdır.)
+<6> Komutları çağıracak
+ çağırıcı sınıftır.(Invoker sınıfı)
+<7> Client ise Invoker(Çağırıcı)
+ sınıfını çağırır.
+
+image::command_proje_output.jpg[]
+
+=== Ekran Çıktısı
+Ekran çıktısında görüldüğü üzere sürücünün vites kolu ileri konumuna getirmesiyle çalışan vitesIleri() metodunun String yazısını, sürücü vites kolunu geri konumlandırmasıyla vitesGeri() metodunun string yazısını, sürücünün vites kolunu park konumuna getirmesiyle vitesPark() metodunun string yazısını görmektesiniz. yani her çağırılan komuta karşılık gelen metod içinde tanımlanmış alıcı işlemleri görselleştirlmiştir.

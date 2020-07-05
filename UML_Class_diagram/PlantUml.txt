@@ -1,0 +1,163 @@
+.plantUML Diagram
+[uml,file="umlClass.png"]
+--
+@startuml
+package de.homelabs.webapps.workbench.menu { 
+
+
+interface Vasýta{
+	# Marka: String
+        # Model: String
+	+ Renk: String
+        + Yakit_turu: String
+        - Seri_No: String
+
+        + String SetMarka()
+        + String setModel() 
+        + String setRenk() 
+        + String setYakit_turu() 
+        + getSeri_No()        
+        
+}
+
+interface Otomobil{        
+        
+	- Tekerlek_sayýsý: Integer
+          String SetTekerlek_sayýsý
+    
+	
+}
+interface DenizYolu{
+        - Uzunluk: Long
+        - Hýz: Integer
+        - Pervane_sayisi: Integer
+
+        + Long setUzunluk() 
+        + Int setHýz() 
+        - getPervane_sayisi() 
+	
+}
+interface HavaYolu{
+	- Ucak_tipi: String
+        - Hýz: Integer
+        + KanatGenisligi: Float
+        - PilotSayisi: Integer
+
+        + String setUcak_tipi() 
+        + Float setKanatGenisligi() 
+        + Int setPervane_sayisi()
+       - Int setPervane_sayisi()
+        
+                
+}
+
+
+interface YolcuUcagý{
+	- YolcuKapasitesi: Integer
+        + Int setYolcuKapasitesi()
+        - getYolcuKapasitesi()
+}
+
+interface SavasUcagý{
+	+ CephaneTuru: String
+}
+interface KargoUcagý{
+	- YukKapasitesi: Double
+        + Int setYukKapasitesi()
+        - getYukKapasitesi()
+}
+
+interface Otobus{
+	- YolcuSayisi: Integer
+        + Int setYolcuSayisi()
+        - getYolcuSayisi()
+}
+        
+
+interface Araba{
+	+ VitesTuru: String
+
+}
+interface Koltuk{
+	+ Yapisi: String
+}
+interface Kamyon{
+	- YukKapasitesi: Double
+        + Double setYukKapasitesi()
+        - getYukKapasitesi()
+}
+
+interface Sofor{
+	
+        + Kullan()
+        
+}
+
+interface PilotLisansi{
+	+ LisansTuru: Char
+}
+
+interface Pilot{
+	+ Rütbe: String
+        
+}
+
+interface Paket{
+	- Agýrlýk: Double
+        + Double setAgýrlýk()
+        - getAgýrlýk()
+        
+}
+interface Yolcu{
+	+ ad: String
+        + soyad: String
+        
+}
+
+interface Tekerlek{
+	- Ebat: Float
+        + Float setEbat()
+        - getEbat()
+
+        
+        
+}
+
+
+
+Class Vasýta
+Class Otomobil
+Class DenizYolu
+Class HavaYolu
+}
+
+
+
+
+
+Otomobil --|>  Vasýta
+DenizYolu --|>  Vasýta
+HavaYolu --|>  Vasýta
+
+Araba--o Otomobil
+Otobus--o Otomobil
+Kamyon--o Otomobil
+
+
+YolcuUcagý ..|> HavaYolu
+SavasUcagý ..|> HavaYolu
+KargoUcagý ..|> HavaYolu
+
+
+Sofor "1" ..> Otobus : "<<kullanýr>>"
+Koltuk"1..*" --o Araba
+Kamyon  *--  "4..*"Tekerlek
+Pilot *--  PilotLisansi
+
+
+SavasUcagý  "1..*" - "0..*" Pilot : Uçurmak
+KargoUcagý  --> "1..*" Paket: Taþýmak
+YolcuUcagý  --> "1..*" Yolcu: Ulaþtýrmak
+@enduml
+--  
+

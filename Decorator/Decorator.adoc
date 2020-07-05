@@ -1,0 +1,307 @@
+
+= Decorator
+
+== Nedir?
+
+Decorator tasarım deseni, structural tasarım desenlerinden biridir.
+
+Bir nesneye dinamik olarak yeni özellikler eklemek için kullanılır.
+
+Kalıtım kullanmadan da bir nesnenin görevlerini artırabileceğimizi gösterir.
+
+NOTE: Bir sınıfın nesnesine runtime zamanında eklenen özellikler, bu sınıftan yaratılmış diğer nesneleri etkilemez.
+
+== Ne zaman Kullanılır?
+
+Runtime zamanında bir nesneye yeni özellikler eklemek istiyorsak kullanabiliriz.
+
+Decorator tasarım deseni, structural tasarım desenlerinden biridir.
+
+Bir nesneye dinamik olarak yeni özellikler eklemek için kullanılır.
+
+Kalıtım kullanmadan da bir nesnenin görevlerini artırabileceğimizi gösterir.
+
+
+== Nasıl Kullanılır?
+
+Decorator tasarım desenini Decorator sınıfları ve Component sınıfları şeklinde iki kısma ayırabiliriz. Component sınıfları içerisinde Decorator süper sınıfı bulunur.
+
+Decorator sınıfı Component sınıfından türemiştir. Aynı zamanda Decorator sınıfı ile Component sınıfı arasında HAS-A ilişkisi vardır. Bunun anlamı, Decorator sınıfı içerisinde Component türünden instance değişken bulunur (Composition yapısı).
+
+Decorator sınıfı abstract veya interface olabilir. Somut sınıf kullanmamak gereklidir.
+
+Dinamik olarak özelliklerin ekleneceği nesne, ConcreteComponent sınıfından türetilir.
+
+ConcreteDecorator nesnesi, ConcreteComponent nesnesine özelliklerin eklenmesi işlemini yapar.
+
+ 
+
+[uml,file="DecoratorUmlClass.png"]
+--
+@startuml
+package com.fatih.decorator.design.pattern { 
+
+
+Class ABSfrenOzelligiEkleyici{
+	
+        + ABSfrenOzelligiEkleyici()
+        + vasitaOlustur() : Void
+        - frenEkle() : Void
+      
+}
+
+Class Araba{
+        
+	    
+        + vasitaOlustur() : Void
+        
+        
+}
+
+Class CelikJantOzelligiEkleyici{
+
+      
+	   + CelikJantOzelligiEkleyici() 
+	   + vasitaOlustur() : Void
+       - celikJantEkle() : Void
+       
+}
+
+
+Class Kamyon{
+      
+	     
+	    
+        + vasitaOlustur() : Void
+       
+}
+
+Class KlimaOzelligiEkleyici{
+
+      
+	   + KlimaOzelligiEkleyici() 
+	   + vasitaOlustur() : Void
+       - klimaOzelligiEkle() : Void
+       
+}
+Class Otobus{
+      
+	     
+	    
+        + vasitaOlustur() : Void
+       
+}
+interface Vasita{
+      
+	     
+	    
+        + vasitaOlustur() : Void
+       
+}
+
+abstract VasitaOzellikEkleyici{
+      
+	     
+	    # ozellikEkleVasita : Vasita
+        + VasitaOzellikEkleyici() : Void
+       
+}
+
+note top of KlimaOzelligiEkleyici
+ ( Concreate Decorator )
+ Vasıtaya klima özelliği ekler.
+end note
+note top of CelikJantOzelligiEkleyici
+ ( Concreate Decorator )
+ Vasıtaya çelik jant ekler.
+end note
+note top of ABSfrenOzelligiEkleyici
+ ( Concreate Decorator )
+ Vasıtaya ABS fren sistemi ekler.
+end note
+
+note top of VasitaOzellikEkleyici
+ ( Decorator )
+ Vasıtaya dinamik olarak ek
+ özellikler eklemek için kullanılır.
+end note
+
+
+note bottom of Araba
+( ConcreteComponent )
+ nesnenin özeliklerini arttırmak için,
+ temel nesneden türetilip de, yeni
+ nesneler yaratılmasına gerek yok
+end note
+note left of Vasita
+Component sınıfı
+ 
+end note
+
+
+
+
+ABSfrenOzelligiEkleyici "<<extends>>"--|> VasitaOzellikEkleyici
+Araba "<<implement>>"..|> Vasita
+CelikJantOzelligiEkleyici "<<extends>>"--|> VasitaOzellikEkleyici
+Kamyon "<<implement>>"..|> Vasita
+KlimaOzelligiEkleyici "<<extends>>"--|> VasitaOzellikEkleyici
+Otobus "<<implement>>"..|> Vasita
+VasitaOzellikEkleyici "<<implement>>"..|> Vasita
+
+
+
+
+
+
+
+
+@enduml
+
+--
+==== Neden Decorator Kullandım
+Vasita üreten bir fabrikanın üretilmiş nesnenelerine sonradan dinamik bir şekilde özellik ekleyebilmesi için decorator kullandım.
+[source,java]
+----
+public interface Vasita {<1>
+
+  void vasitaOlustur();
+}
+
+----
+
+[source,java]
+----
+
+public class Araba implements Vasita {<2>
+
+  @Override
+  public void vasitaOlustur() {
+    System.out.println( "Araba Üretildi" );
+  }
+}
+----
+
+[source,java]
+----
+
+
+public abstract class VasitaOzellikEkleyici implements Vasita {<3>
+
+  protected Vasita  ozellikEkleVasita;
+
+  public VasitaOzellikEkleyici( final Vasita vasita ) {
+    ozellikEkleVasita = vasita;
+  }
+}
+----
+
+
+[source,java]
+----
+
+public class ABSfrenOzelligiEkleyici
+extends VasitaOzellikEkleyici {<4>
+
+  public ABSfrenOzelligiEkleyici( final Vasita vasita ) {
+    super( vasita );
+  }
+
+  @Override
+  public void vasitaOlustur() {
+    ozellikEkleVasita.vasitaOlustur();
+    frenEkle();
+  }
+
+  private void frenEkle() {
+    System.out.println( "Abs fren sistemi eklendi." );
+  }
+}
+----
+
+[source,java]
+----
+
+public class CelikJantOzelligiEkleyici
+extends VasitaOzellikEkleyici {<5>
+
+  public CelikJantOzelligiEkleyici( final Vasita vasita ) {
+    super( vasita );
+  }
+
+  @Override
+  public void vasitaOlustur() {
+    ozellikEkleVasita.vasitaOlustur();
+    celikJantEkle();
+  }
+
+  private void celikJantEkle() {
+    System.out.println( "Çelik jant eklendi." );
+  }
+}
+----
+
+[source,java]
+----
+
+public class KlimaOzelligiEkleyici
+extends VasitaOzellikEkleyici {<6>
+
+  public KlimaOzelligiEkleyici( final Vasita vasita ) {
+    super( vasita );
+  }
+
+  @Override
+  public void vasitaOlustur() {
+    ozellikEkleVasita.vasitaOlustur();
+    klimaOzelligiEkle();
+  }
+
+  private void klimaOzelligiEkle() {
+    System.out.println( "Klima eklendi." );
+  }
+}
+
+
+----
+
+[source,java]
+----
+
+public class Fabrika {<7>
+
+    public static void main(final String[] args) {
+
+        final Vasita vasita = new ABSfrenOzelligiEkleyici(
+                new CelikJantOzelligiEkleyici(new KlimaOzelligiEkleyici(new Araba())));
+
+        final Vasita vasita2 = new ABSfrenOzelligiEkleyici(
+                new KlimaOzelligiEkleyici(new Otobus()));
+
+        final Vasita vasita3 = new CelikJantOzelligiEkleyici(
+                new KlimaOzelligiEkleyici(new Kamyon()));
+
+        vasita.vasitaOlustur();
+        System.out.println("\n");
+        vasita2.vasitaOlustur();
+        System.out.println("\n");
+        vasita3.vasitaOlustur();
+    }
+}
+----
+<1> Component sınıfı
+<2> Dinamik olarak özelliklerin ekleneceği nesne, ConcreteComponent sınıfından türetilir.
+<3> Decorator sınıfı abstract veya interface olabilir. Somut sınıf kullanmamak gereklidir.
+Decorator sınıfı Component sınıfından türemiştir.
+Aynı zamanda Decorator sınıfı ile Component sınıfı arasında HAS-A ilişkisi vardır. Bunun anlamı, Decorator sınıfı içerisinde Component türünden instance değişken bulunur (Composition yapısı).
+<4> ConcreteDecorator nesnesi, ConcreteComponent nesnesine özelliklerin eklenmesi işlemini yapar.
+<5> ConcreteDecorator nesnesi, ConcreteComponent nesnesine özelliklerin eklenmesi işlemini yapar.
+<6> ConcreteDecorator nesnesi, ConcreteComponent nesnesine özelliklerin eklenmesi işlemini yapar.
+
+=== Ekran Çıktısı :
+image::Decorator_proje_output.jpg[]
+Ekran  çıktısında görüldüğü üzere ilk olarak Vasita sınıfından üretilmiş arabaya klima özelliği ekleniyor, ardından çelik jant özelliği ve abs fren sistemi özelliği eklenerek sonuç ekrana yazdırılmıştır.
+
+Vasita sınıfından otobüs üretiliyor, klima özelliği ekleniyor, ardından abs fren sistemi özelliği eklenerek sonuç ekrana yazdırılmıştır.
+
+Vasita sınıfından kamyon üretiliyor, klima özelliği ekleniyor, ardından çelik jant özelliği eklenerek sonuç ekrana yazdırılmıştır.

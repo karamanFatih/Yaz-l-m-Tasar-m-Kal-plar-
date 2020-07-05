@@ -1,0 +1,66 @@
+.Memento Odev
+[uml,file="MementoUmlClass.png"]
+--
+@startuml
+package com.fatih.memento.design.pattern { 
+
+
+Class Oyuncu{
+	
+        + Main() : String
+      
+}
+
+Class Oyun{
+	    - sahne :String
+        + sahneAl() : String
+        + sahneAta() :Void
+        + hatırlayıcıYarat():SahneHatırlatıcı 
+        + hatırlayıcıAta():Void
+}
+
+Class SahneHatırlatıcı{
+
+        - sahne :String
+	    + SahneHatırlayıcı()
+        + sahneAl() :String
+       
+}
+
+Class SahneYazımProgramı{
+
+        - oyun :Oyun
+        - geçmişListesi :List<SahneHatırlayıcı>
+        - position :Int
+        
+	    + SahneYazımProgramı()
+        + SahneYaz() :void
+        + geriAl():void
+        
+}
+
+note top of Oyun
+Oyun sahneleri Oyun isimli sınıfta tutmaktadır.
+end note
+
+note top of SahneHatırlatıcı
+Oyun sınıfının sahnelerini de,
+ileriki kullanımlar için saklayan
+SahneHatırlayıcı sınıfıdır.
+end note
+
+note top of SahneYazımProgramı
+Oyun ve her bir sahne yazma haretekini
+tutan SahneHatırlayıcı nesnelerinin
+listesini tutan SahneYazımProgramı sınıfıdır.
+end note
+
+
+Oyun ..> SahneHatırlatıcı
+SahneYazımProgramı "1" o-- "1..*" SahneHatırlatıcı
+Oyuncu ..> Oyun :Use
+Oyuncu ..> SahneYazımProgramı :Use
+
+
+@enduml
+--

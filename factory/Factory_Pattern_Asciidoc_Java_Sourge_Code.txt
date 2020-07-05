@@ -1,0 +1,96 @@
+// Asagýdaki kod parçalarý Neatbeans ortamýnda farklý sýnýf dosyalarý icindedir.
+
+
+package factory_pattern;
+
+public interface Otomobil { // birden fazla otomobil üreten firma var marka model içermeliler
+    void Marka();
+    void Model(int year);
+}
+
+
+
+package factory_pattern;
+
+
+import factory_pattern.Otomobil;
+
+public class Mercedes implements Otomobil {
+
+    @Override
+    public void Marka() {
+        System.out.println("Otomobilin Markasý Mercedes");
+    }
+
+    @Override
+    public void Model(int year) {
+        System.out.println(year + " senesinde uretildi.");
+    }
+
+}
+
+
+
+
+package factory_pattern;
+
+
+import factory_pattern.Otomobil;
+
+public class Audi implements Otomobil {
+
+    @Override
+    public void Marka() {
+        System.out.println("Otomobilin Markasý Audi");
+    }
+
+    @Override
+    public void Model(int year) {
+        System.out.println(year + " senesinde uretildi.");
+    }
+
+}
+
+
+
+package factory_pattern;
+
+public class OtomobilFactory {//factory (fabrika) sýnýfý ekleyerek kodunuzu daha soyut bir hale geitiriyoruz.
+    //OtomobilFactory sýnýfýnýn bir tane static
+    //metodu var bu yordam diðer sýnýflarý oluþtururken
+    //her seferinde tekrar tekrar oluþturmak yerine statik 
+    //bir biçimde daha optimize olarak oluþturmaktadýr.
+
+    public static Otomobil createotomobil(Class aClass) throws IllegalAccessException, InstantiationException {
+        return (Otomobil) aClass.newInstance();
+    }
+}
+
+
+
+
+
+package factory_pattern;
+
+
+public class Client {
+
+    
+     public static void main(String[] args) {
+
+        try {
+            Mercedes mercedes = (Mercedes) OtomobilFactory.createotomobil(Mercedes.class);
+            mercedes.Model(1983);
+            mercedes.Marka();
+
+            Audi audi = (Audi) OtomobilFactory.createotomobil(Audi.class);
+            audi.Model(2017);
+            audi.Marka();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+}

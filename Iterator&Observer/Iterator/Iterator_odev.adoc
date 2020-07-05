@@ -1,0 +1,92 @@
+.Iterator Odev
+[uml,file="umlClass.png"]
+--
+@startuml
+package com.fatih.iterator.design.pattern { 
+
+
+Class Channel{
+	
+        -  frequency : Double
+        -  TYPE :ChannelTypeEnum
+
+        
+        + Channel() : String
+        + getFrequency() :Double
+        + getTYPE() :ChannelTypeEnum
+        + toString() :String
+        
+}
+
+Interface ChannelCollection{
+	
+        + addChannel() : Void
+        + removeChannel() :Void
+        + iterator():ChannelIterator 
+}
+
+Class ChannelCollectionImpl{
+
+        - channelsList :List<Channel>
+	    + ChannelCollectionImpl()
+        + addChannel() :Void
+        + removeChannel():Void
+        + iterator():ChannelIterator
+        
+        
+}
+
+Class ChannelIteratorImpl{
+
+        - type :ChannelTypeEnum
+        - channels :List<Channel>
+        - position :Int
+        
+	    + ChannelIteratorImpl()
+        + hasNext() :Boolean
+        + next():Channel
+        
+}
+
+Interface ChannelIterator{
+
+        - hasNext() :Boolean
+        - next() :Channel
+        
+        
+}
+
+Enum ChannelTypeEnum{
+        + TURKISH
+        + ENGLISH
+        + ALL
+
+}
+
+
+Class IteratorPatternTest{
+
+       
+	    + main()
+	    - {static} populateChannels :ChannelCollection
+       
+        
+}
+
+note top of ChannelTypeEnum
+tüm farklı kanal türlerini tanımlar
+end note
+
+
+
+ChannelCollectionImpl ..|> ChannelCollection :implements
+ChannelIteratorImpl ..|> ChannelIterator :implements
+
+
+ChannelCollectionImpl -->  ChannelIteratorImpl :has
+ChannelCollectionImpl -->  Channel
+IteratorPatternTest --> ChannelCollectionImpl :uses
+
+
+@enduml
+--

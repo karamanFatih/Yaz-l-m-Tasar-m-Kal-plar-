@@ -1,0 +1,129 @@
+.Iterator Odev
+[uml,file="umlClass.png"]
+--
+@startuml
+package com.fatih.iterator.design.pattern { 
+
+interface OtomobilAddedListener{
+        + onOtomobilAdded() : Void
+
+}
+
+
+Class CountingOtomobilAddedListener{
+	
+        - {static} otomobillerAddedCount : Ýnt
+       
+        + onOtomobilAdded() : Void
+        
+        
+}
+
+Class Galeri{
+	    - otomobiller : List<Otomobil>
+	     - listeners : List<OtomobilAddedListener>
+        + addOtomobil() : Void
+        + registerOtomobilAddedListener() :Void
+        + unregisterOtomobilAddedListener():Void 
+        + notifyOtomobilAddedListeners():Void 
+}
+
+
+
+Class OrderedThreadSafeGaleri{
+
+        - readWriteLock :ReadWriteLock
+        # readLock :Lock
+        # writeLock :Lock
+        - otomobiller :List<Otomobil>
+        - listeners :List<OtomobilAddedListener>
+        
+        
+	    + addOtomobil() :Void
+        + registerOtomobilAddedListener() :OtomobilAddedListener
+        + unregisterOtomobilAddedListener():Void
+        + notifyOtomobilAddedListeners() : Void
+        
+}
+
+Class Otomobil{
+
+        - name :String
+        + Otomobil()
+        + getName() : String
+        + setName() : Void
+        
+        
+}
+
+
+
+
+Class PrintNameOtomobilAddedListener{
+
+       
+	    + onOtomobilAdded() :Void
+	    
+}
+Class ThreadSafeCountingOtomobilAddedListener{
+
+       
+	    - {static} otomobillerAddedCount :Void
+	    + onOtomobilAdded() :Void
+	    
+}
+Class ThreadSafeGaleri{
+
+        - readWriteLock :ReadWriteLock
+        # readLock :Lock
+        # writeLock :Lock
+        - otomobiller :List<Otomobil>
+        - listeners :List<OtomobilAddedListener>
+        
+         + addOtomobil() :Void
+        + registerOtomobilAddedListener() :OtomobilAddedListener
+        + unregisterOtomobilAddedListener():Void
+        + notifyOtomobilAddedListeners() : Void
+       
+	    
+}
+
+note bottom of OtomobilAddedListener
+observer
+end note
+
+note bottom of Galeri
+otomobillerin bir listesini saklamaktan
+ve her yeni otomobil eklendiðinde
+kayýtlý dinleyicilerin bir koleksiyonunu
+bildirmekten sorumlu
+end note
+
+note bottom of PrintNameOtomobilAddedListener
+concrete observer
+end note
+
+
+
+CountingOtomobilAddedListener ..|> OtomobilAddedListener :implements
+CountingOtomobilAddedListener -- Otomobil :subject
+
+PrintNameOtomobilAddedListener ..|> OtomobilAddedListener :implements
+PrintNameOtomobilAddedListener -- Otomobil :subject
+
+ThreadSafeCountingOtomobilAddedListener ..|> OtomobilAddedListener :implements
+ThreadSafeCountingOtomobilAddedListener -- Otomobil :subject
+
+
+Galeri --> Otomobil :uses
+OrderedThreadSafeGaleri --> Otomobil
+ThreadSafeGaleri --> Otomobil
+Galeri *-- OtomobilAddedListener
+
+
+
+
+
+
+@enduml
+--

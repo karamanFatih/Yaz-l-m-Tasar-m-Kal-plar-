@@ -1,0 +1,95 @@
+.Chain Of Responsibility
+[uml,file="ChainOfResponsibilityUmlClass.png"]
+--
+@startuml
+package com.fatih.chainofresponsibility.design.pattern { 
+
+
+Class BankacilikİslemGecmisi{
+	
+        + işleviYerineGetir() : void
+      
+}
+
+Class Degerlendir{
+	    # sonrakiİşlev :Degerlendir
+        # sonrakiniAyarla() : Degerlendir
+        # çalıştır() :void
+        # işleviYerineGetir(): void 
+        
+}
+
+Class Gelir{
+
+        # işleviYerineGetir :void
+	   
+       
+}
+
+Class Kredi{
+
+        + FindeksKrediNotu :Integer
+        + Gelir :Integer
+        + OdemeAliskanlikları :Boolean
+        + BankacilikİslemGecmisi :Boolean
+        + durum :Boolean
+        
+    
+	    + isDurum() : boolean
+        + setDurum() :void
+       
+}
+
+Class KrediNot{
+
+    
+	    + işleviYerineGetir() : void
+       
+}
+
+Class OdemeAliskanlık{
+
+    
+	    + işleviYerineGetir() : void
+       
+}
+
+
+Class MüsteriKrediTalep{
+
+    
+	    + {static}main() : void
+       
+}
+
+note top of BankacilikİslemGecmisi
+Kredi talep eden müşterinin geçmiş
+bankacılık işlemleri değerlendirilir.
+end note
+
+note top of Gelir
+Kredi talep eden müşterinin
+gelir drumu degerlendirilir.
+end note
+
+note top of KrediNot
+Kredi talep eden müşterinin findeks kredi notu değerlendirilir.
+end note
+
+note top of OdemeAliskanlık
+Kredi talep eden müşterinin ödeme alışkanlıkları değerlendirilir.
+end note
+
+
+BankacilikİslemGecmisi --|> Degerlendir
+Gelir --|> Degerlendir
+KrediNot --|> Degerlendir
+OdemeAliskanlık --|> Degerlendir
+
+MüsteriKrediTalep--> Degerlendir
+Kredi --> Degerlendir
+Degerlendir --> Degerlendir :Çalıştır
+
+
+@enduml
+--
